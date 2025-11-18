@@ -1,2 +1,13 @@
-pdfplumber>=0.11.0
+
+python-dotenv
+numpy
+tqdm
+pdfplumber
+torch
+transformers
+sentencepiece
 faiss-cpu
+fastapi
+uvicorn
+scikit-learn
+pydantic
