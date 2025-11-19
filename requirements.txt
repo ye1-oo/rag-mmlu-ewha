@@ -11,3 +11,7 @@ fastapi
 uvicorn
 scikit-learn
 pydantic
+pandas
+langdetect
+wikipedia-api
+wikipedia
