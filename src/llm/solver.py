@@ -35,7 +35,9 @@ load_dotenv()
 CONFIG_PATH = "configs.yaml"
 
 if os.path.exists(CONFIG_PATH):
-    with open(CONFIG_PATH, "r") as f:
+    # with open(CONFIG_PATH, "r") as f:
+    #     _cfg = yaml.safe_load(f)
+    with open("configs.yaml", "r", encoding="utf-8") as f:
         _cfg = yaml.safe_load(f)
 else:
     # 기본값: 필요하면 프로젝트에서 수정

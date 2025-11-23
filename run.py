@@ -30,8 +30,8 @@ TESTSET_PATH = "data/testset.csv"    # 혹은 private.csv
 OUTPUT_PATH = "n_final.csv"          
 
 EWHA_INDEX_PATH = "data/ewha_index.faiss"
-EWHA_META_PATH = "data/ewha_corpus.jsonl"
-
+# EWHA_META_PATH = "data/ewha_corpus.jsonl" 
+EWHA_META_PATH ="data/ewha_corpus_structured.jsonl" #최종 파일로 수정
 MMLU_INDEX_PATH = "data/mmlu_kb_index.faiss"
 MMLU_META_PATH = "data/mmlu_kb.jsonl"
 
