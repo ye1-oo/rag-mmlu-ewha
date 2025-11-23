@@ -25,3 +25,5 @@ wikipedia-api
 # --- 웹 서버 (필요한 경우만 유지) ---
 fastapi
 uvicorn
+
+tabulate
