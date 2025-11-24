@@ -266,7 +266,7 @@ def build_ewha_context(
     example,
     embedder: Embedder,
     ewha_index: FaissIndex,
-    top_k: int = 6
+    top_k: int = 12 # 더 많은 힌트조각 제공 
 ) -> str:
     """
     Ewha 학칙용 context builder:
@@ -274,9 +274,12 @@ def build_ewha_context(
     - FAISS 검색 결과 상위 top_k 문장 join
     """
 
-    query = example.question + "\n" + " ".join(
-        f"({k}) {v}" for k, v in example.options.items()
-    )
+    # query = example.question + "\n" + " ".join(
+    #     f"({k}) {v}" for k, v in example.options.items()
+    # )
+
+    # [수정 후] 질문만 사용
+    query = example.question
 
     results = retrieve_ewha_context(query, embedder, ewha_index, top_k=top_k)
 
