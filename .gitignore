@@ -222,3 +222,5 @@ env/
 .newvenv/
 newvenv/
 .venv/
+
+test_ewha_num1.csv
