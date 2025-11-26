@@ -60,17 +60,20 @@ def search_external_kb(
     domain: str,
     embedder: Embedder,
     kb_index: FaissIndex,
-    top_k: int = 10
+    top_k: int = 15  # 검색 범위를 좀 더 넓힘 (10 -> 15)
 ) -> List[Dict]:
     """
     외부 MMLU KB 검색 (FAISS)
-    domain이 주어지면 해당 도메인으로 필터링한다.
+    [수정 사항]
+    - 도메인 필터링(if domain == ...)을 제거했습니다.
+    - 질문과 의미적으로 가장 유사한 문서를 전체 DB에서 찾습니다.
     """
     q_emb = embedder.encode(question)[0]
     results = kb_index.search(q_emb, top_k=top_k)
 
-    if domain:
-        results = [r for r in results if r.get("domain") == domain]
+    # [삭제됨] 도메인 강제 필터링 로직
+    # if domain:
+    #     results = [r for r in results if r.get("domain") == domain]
 
     return results
 

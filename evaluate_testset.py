@@ -17,8 +17,8 @@ from src.parsing.parse_testset import load_examples_from_csv
 from src.routing.router import route_source, classify_domain
 
 
-TESTSET_PATH = "data/testset.csv"
-PRED_PATH = "2_final.csv"
+TESTSET_PATH = "data/private_test.csv"
+PRED_PATH = "2_final_private.csv"
 
 
 def normalize_choice(s):

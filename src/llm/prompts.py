@@ -33,15 +33,25 @@ EWHA_AGENT_STRICT = """[SYSTEM]
 [OPTIONS]
 {options}
 
-[REASONING]
-1. 질문과 관련된 학칙 조항이나 문장을 발췌문에서 찾으세요.
-2. 각 선택지 (A)~(D)가 학칙과 일치하는지 한 줄씩 평가하세요.
-3. 학칙과 가장 잘 맞는 하나의 선택지를 고르세요.
-4. **부정문 처리:** 질문이 '옳지 않은','않은', '않는', '제외한' 것을 묻는다면, 학칙과 **다르거나 없는** 내용을 정답으로 선택하세요.
+[INSTRUCTION]
+당신은 답변을 내리기 전에 반드시 아래의 [THOUGHT PROCESS]를 순서대로 수행해야 합니다.
+
+[THOUGHT PROCESS]
+1. **질문 유형 분석:** 질문이 '옳은 것'을 묻는지, '옳지 않은(틀린/제외한/아닌/잘못된) 것'을 묻는지 명확히 정의하세요.
+   - 부정 표현이 있다면 **"부정형 질문"**이라고 명시하세요.
+   
+2. **선택지 검증:** 각 선택지 (A)~(D)를 하나씩 읽고, 위 [CONTEXT]의 내용과 일치하는지 O/X로 판별하세요.
+   - (A): [내용] -> 문맥과 일치함(O) / 일치하지 않음(X) / 근거 없음(?) (근거: 제0조 0항)
+   
+3. **정답 도출:**
+   - 긍정형 질문이면: 문맥과 **일치하는(O)** 선택지를 고르세요.
+   - 부정형 질문이면: 다음 우선순위에 따라 정답을 선택하세요.
+     1. 문맥에 명시된 내용과 **정면으로 배치되거나 틀린(X)** 내용 (최우선)
+     2. 문맥에 없더라도, 학칙의 다른 조건(졸업 요건 등)과 **논리적으로 양립할 수 없는** 내용
+     3. 문맥에 전혀 언급되지 않아 알 수 없는(?) 내용
 
 [OUTPUT FORMAT]
-- 먼저 한국어로 간단한 이유를 3~5문장 정도로 설명하세요.
-- 마지막 줄에는 반드시 아래 형식으로 정답만 출력하세요:
+위 [THOUGHT PROCESS]의 내용을 한국어로 요약해서 설명한 뒤, 마지막 줄에 정답을 출력하세요.
 
 **[ANSWER]: (X) 선택지내용**
 
@@ -102,113 +112,80 @@ EWHA_AGENT_SHORT = """[SYSTEM]
 **[ANSWER]: (X) 선택지내용**
 """
 
-
 # ------------------------------------------------
-# MMLU 도메인별 프롬프트 (영어)
+# MMLU 도메인별 프롬프트 (영어) - [CoT 강화 버전]
 # ------------------------------------------------
 
-def _base_mmlu_system(role: str) -> str:
-    return f"""[SYSTEM]
-You are {role}. You answer multiple-choice exam questions.
-You MUST use ONLY the given context below and your own general knowledge;
-DO NOT assume access to the original MMLU-Pro dataset or its answers.
+# 1. 공통 템플릿 정의
+MMLU_COT_TEMPLATE = """[SYSTEM]
+You are {role}. 
+You are taking a high-stakes multiple-choice exam. 
+You must answer based ONLY on the provided [CONTEXT] and your expert knowledge.
 
-If the context is insufficient, you still choose the most plausible single option.
+[CONTEXT]
+{context}
 
-Your final answer line MUST strictly follow this format:
+[QUESTION]
+{question}
+
+[OPTIONS]
+{options}
+
+[INSTRUCTION]
+You must verify your answer using the following [THOUGHT PROCESS] step-by-step.
+
+[THOUGHT PROCESS]
+1. **Analyze the Question:** Identify the core concept and what is being asked.
+   - **Crucial:** If the question asks for "NOT", "EXCEPT", "LEAST", or "FALSE", explicitly note that it is a **Negative Question**.
+
+2. **Verify Options against Context:** Check each option (A)~(J) against the provided [CONTEXT].
+   - (A): [Summary] -> Supported by context? (Yes/No/Unknown)
+   - (B): ...
+   
+3. **Derive the Answer:**
+   - **Priority 1:** Select the option explicitly supported by the context.
+   - **Priority 2:** If the context is partial or missing, use your expert knowledge to select the most logically valid option.
+   - For **Negative Questions**, select the option that contradicts the context or is factually incorrect.
+
+[OUTPUT FORMAT]
+Summarize your thought process in 3-5 sentences, then print the final answer on the last line.
+
 **[ANSWER]: (X) option_text**
-where X is one of A, B, C, D, ...
-Do NOT print [ANSWER] on any other line.
 """
 
-
+# 2. 도메인별 Role 설정 (MMLU_AGENT_MAIN)
 MMLU_AGENT_MAIN: Dict[str, str] = {
-    "law": _base_mmlu_system("a professor of law") + """
-[CONTEXT]
-{context}
-
-[QUESTION]
-{question}
-
-[OPTIONS]
-{options}
-
-[REASONING]
-1. Recall the relevant legal concepts from the context.
-2. Evaluate each option against those concepts.
-3. Choose the single best answer.
-
-Then give a short explanation (3–5 sentences),
-and finally print the answer line in the required format.
-""",
-
-    "psychology": _base_mmlu_system("a professor of psychology") + """
-[CONTEXT]
-{context}
-
-[QUESTION]
-{question}
-
-[OPTIONS]
-{options}
-
-Explain your reasoning briefly (3–5 sentences),
-then output the final answer line:
-
-**[ANSWER]: (X) option_text**
-""",
-
-    "business": _base_mmlu_system("a professor of business and economics") + """
-[CONTEXT]
-{context}
-
-[QUESTION]
-{question}
-
-[OPTIONS]
-{options}
-
-Explain which option is most consistent with the context,
-then output:
-
-**[ANSWER]: (X) option_text**
-""",
-
-    "philosophy": _base_mmlu_system("a professor of philosophy") + """
-[CONTEXT]
-{context}
-
-[QUESTION]
-{question}
-
-[OPTIONS]
-{options}
-
-Think step by step for a few sentences,
-then output:
-
-**[ANSWER]: (X) option_text**
-""",
-
-    "history": _base_mmlu_system("a professor of world history") + """
-[CONTEXT]
-{context}
-
-[QUESTION]
-{question}
-
-[OPTIONS]
-{options}
-
-Explain briefly which option best matches the historical facts in the context,
-then output:
-
-**[ANSWER]: (X) option_text**
-""",
+    "law": MMLU_COT_TEMPLATE.format(
+        role="a distinguished Professor of Law",
+        context="{context}", question="{question}", options="{options}"
+    ),
+    "psychology": MMLU_COT_TEMPLATE.format(
+        role="a clinical psychologist and expert in cognitive science",
+        context="{context}", question="{question}", options="{options}"
+    ),
+    "business": MMLU_COT_TEMPLATE.format(
+        role="an expert in business management and economics",
+        context="{context}", question="{question}", options="{options}"
+    ),
+    "philosophy": MMLU_COT_TEMPLATE.format(
+        role="a philosopher specializing in logic and ethics",
+        context="{context}", question="{question}", options="{options}"
+    ),
+    "history": MMLU_COT_TEMPLATE.format(
+        role="a historian with deep knowledge of world history",
+        context="{context}", question="{question}", options="{options}"
+    ),
+    "default": MMLU_COT_TEMPLATE.format(
+        role="an expert exam solver",
+        context="{context}", question="{question}", options="{options}"
+    ),
 }
 
-# 좀 다른 스타일의 보조 에이전트 (시험 잘 푸는 수험생 버전)
+# 3. 보조 에이전트 (Role을 'Experienced Exam Solver'로 통일하여 다양성 확보)
 MMLU_AGENT_ALT: Dict[str, str] = {
-    domain: tmpl.replace("professor", "experienced exam solver")
-    for domain, tmpl in MMLU_AGENT_MAIN.items()
+    domain: MMLU_COT_TEMPLATE.format(
+        role="an experienced exam solver known for high accuracy",
+        context="{context}", question="{question}", options="{options}"
+    )
+    for domain in MMLU_AGENT_MAIN.keys()
 }

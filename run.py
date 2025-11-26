@@ -26,12 +26,14 @@ from src.llm.solver import solve_with_ensemble
 # 1. 환경 설정
 # ---------------------------------------------------
 
-TESTSET_PATH = "data/testset.csv"    # 혹은 private.csv
-OUTPUT_PATH = "2_final.csv"          
+#TESTSET_PATH = "data/testset.csv"    # 혹은 private.csv
+TESTSET_PATH = "data/private_test.csv" 
+#OUTPUT_PATH = "2_final.csv"          
+OUTPUT_PATH = "2_final_private.csv"  
 
-EWHA_INDEX_PATH = "data/ewha_index.faiss"
+EWHA_INDEX_PATH = "data/ewha_index_final.faiss" #최종 파일로 수정
 # EWHA_META_PATH = "data/ewha_corpus.jsonl" 
-EWHA_META_PATH ="data/ewha_corpus_structured.jsonl" #최종 파일로 수정
+EWHA_META_PATH ="data/ewha_corpus_final.jsonl" #최종 파일로 수정
 MMLU_INDEX_PATH = "data/mmlu_kb_index.faiss"
 MMLU_META_PATH = "data/mmlu_kb.jsonl"
 
