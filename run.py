@@ -1,7 +1,7 @@
 # run.py
 """
 최종 제출용 실행 스크립트
-- testset.csv → n_final.csv 생성
+- testset.csv → 2_final.csv 생성
 - Ewha / MMLU 라우팅
 - Retrieval (Ewha, External KB, Wikipedia)
 - Multi-agent LLM Solver 호출
@@ -27,7 +27,7 @@ from src.llm.solver import solve_with_ensemble
 # ---------------------------------------------------
 
 TESTSET_PATH = "data/testset.csv"    # 혹은 private.csv
-OUTPUT_PATH = "n_final.csv"          
+OUTPUT_PATH = "2_final.csv"          
 
 EWHA_INDEX_PATH = "data/ewha_index.faiss"
 # EWHA_META_PATH = "data/ewha_corpus.jsonl" 

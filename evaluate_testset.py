@@ -1,9 +1,9 @@
 # evaluate_testset.py
 """
-testset.csv + n_final.csv 평가 스크립트
+testset.csv + 2_final.csv 평가 스크립트
 
 - testset.csv: gold 정답 포함 (prompts, answers)
-- n_final.csv: run.py가 생성한 예측 (qid, your_answer)
+- 2_final.csv: run.py가 생성한 예측 (qid, your_answer)
 
 출력:
 - 전체 정확도
@@ -18,7 +18,7 @@ from src.routing.router import route_source, classify_domain
 
 
 TESTSET_PATH = "data/testset.csv"
-PRED_PATH = "n_final.csv"
+PRED_PATH = "2_final.csv"
 
 
 def normalize_choice(s):
@@ -128,7 +128,7 @@ def main():
 
     # 틀린 문제 상세 출력 
     if wrong_examples:
-        print("\n================ ❌ FAILED EXAMPLES (틀린 문제) ================")
+        print("\n================ FAILED EXAMPLES (틀린 문제) ================")
         print(f"총 {len(wrong_examples)}개 문제의 오답을 분석합니다:")
         
         # DataFrame으로 만들어서 깔끔하게 출력
