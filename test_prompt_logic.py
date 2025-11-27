@@ -20,11 +20,11 @@ CORPUS_PATH = os.path.join(BASE_PATH, "ewha_corpus_final.jsonl")
 INDEX_PATH = os.path.join(BASE_PATH, "ewha_index_final.faiss")
 
 # 경로 확인용 출력 (실행 시 경로가 맞는지 눈으로 확인하세요)
-print(f"📂 데이터 경로 확인: {BASE_PATH}")
+print(f" 데이터 경로 확인: {BASE_PATH}")
 if os.path.exists(CORPUS_PATH):
-    print("✅ jsonl 파일 찾음!")
+    print(" jsonl 파일 찾음!")
 else:
-    print(f"❌ jsonl 파일 없음: {CORPUS_PATH}")
+    print(f" jsonl 파일 없음: {CORPUS_PATH}")
 
 # 2. 모델 설정 (Solar Pro 2 사용)
 llm = ChatUpstage(model="solar-pro2", temperature=0)
