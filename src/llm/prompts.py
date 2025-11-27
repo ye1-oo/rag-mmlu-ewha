@@ -113,15 +113,26 @@ EWHA_AGENT_SHORT = """[SYSTEM]
 """
 
 # ------------------------------------------------
-# MMLU 도메인별 프롬프트 (영어) - [CoT 강화 버전]
+# MMLU 도메인별 프롬프트 (영어)
 # ------------------------------------------------
 
-# 1. 공통 템플릿 정의
-MMLU_COT_TEMPLATE = """[SYSTEM]
-You are {role}. 
-You are taking a high-stakes multiple-choice exam. 
-You must answer based ONLY on the provided [CONTEXT] and your expert knowledge.
+def _base_mmlu_system(role: str) -> str:
+    return f"""[SYSTEM]
+You are {role}. You answer multiple-choice exam questions.
+You MUST use ONLY the given context below and your own general knowledge;
+DO NOT assume access to the original MMLU-Pro dataset or its answers.
 
+If the context is insufficient, you still choose the most plausible single option.
+
+Your final answer line MUST strictly follow this format:
+**[ANSWER]: (X) option_text**
+where X is one of A, B, C, D, ...
+Do NOT print [ANSWER] on any other line.
+"""
+
+
+MMLU_AGENT_MAIN: Dict[str, str] = {
+    "law": _base_mmlu_system("a professor of law") + """
 [CONTEXT]
 {context}
 
@@ -131,61 +142,82 @@ You must answer based ONLY on the provided [CONTEXT] and your expert knowledge.
 [OPTIONS]
 {options}
 
-[INSTRUCTION]
-You must verify your answer using the following [THOUGHT PROCESS] step-by-step.
+[REASONING]
+1. Recall the relevant legal concepts from the context.
+2. Evaluate each option against those concepts.
+3. Choose the single best answer.
 
-[THOUGHT PROCESS]
-1. **Analyze the Question:** Identify the core concept and what is being asked.
-   - **Crucial:** If the question asks for "NOT", "EXCEPT", "LEAST", or "FALSE", explicitly note that it is a **Negative Question**.
+Then give a short explanation (3–5 sentences),
+and finally print the answer line in the required format.
+""",
 
-2. **Verify Options against Context:** Check each option (A)~(J) against the provided [CONTEXT].
-   - (A): [Summary] -> Supported by context? (Yes/No/Unknown)
-   - (B): ...
-   
-3. **Derive the Answer:**
-   - **Priority 1:** Select the option explicitly supported by the context.
-   - **Priority 2:** If the context is partial or missing, use your expert knowledge to select the most logically valid option.
-   - For **Negative Questions**, select the option that contradicts the context or is factually incorrect.
+    "psychology": _base_mmlu_system("a professor of psychology") + """
+[CONTEXT]
+{context}
 
-[OUTPUT FORMAT]
-Summarize your thought process in 3-5 sentences, then print the final answer on the last line.
+[QUESTION]
+{question}
+
+[OPTIONS]
+{options}
+
+Explain your reasoning briefly (3–5 sentences),
+then output the final answer line:
 
 **[ANSWER]: (X) option_text**
-"""
+""",
 
-# 2. 도메인별 Role 설정 (MMLU_AGENT_MAIN)
-MMLU_AGENT_MAIN: Dict[str, str] = {
-    "law": MMLU_COT_TEMPLATE.format(
-        role="a distinguished Professor of Law",
-        context="{context}", question="{question}", options="{options}"
-    ),
-    "psychology": MMLU_COT_TEMPLATE.format(
-        role="a clinical psychologist and expert in cognitive science",
-        context="{context}", question="{question}", options="{options}"
-    ),
-    "business": MMLU_COT_TEMPLATE.format(
-        role="an expert in business management and economics",
-        context="{context}", question="{question}", options="{options}"
-    ),
-    "philosophy": MMLU_COT_TEMPLATE.format(
-        role="a philosopher specializing in logic and ethics",
-        context="{context}", question="{question}", options="{options}"
-    ),
-    "history": MMLU_COT_TEMPLATE.format(
-        role="a historian with deep knowledge of world history",
-        context="{context}", question="{question}", options="{options}"
-    ),
-    "default": MMLU_COT_TEMPLATE.format(
-        role="an expert exam solver",
-        context="{context}", question="{question}", options="{options}"
-    ),
+    "business": _base_mmlu_system("a professor of business and economics") + """
+[CONTEXT]
+{context}
+
+[QUESTION]
+{question}
+
+[OPTIONS]
+{options}
+
+Explain which option is most consistent with the context,
+then output:
+
+**[ANSWER]: (X) option_text**
+""",
+
+    "philosophy": _base_mmlu_system("a professor of philosophy") + """
+[CONTEXT]
+{context}
+
+[QUESTION]
+{question}
+
+[OPTIONS]
+{options}
+
+Think step by step for a few sentences,
+then output:
+
+**[ANSWER]: (X) option_text**
+""",
+
+    "history": _base_mmlu_system("a professor of world history") + """
+[CONTEXT]
+{context}
+
+[QUESTION]
+{question}
+
+[OPTIONS]
+{options}
+
+Explain briefly which option best matches the historical facts in the context,
+then output:
+
+**[ANSWER]: (X) option_text**
+""",
 }
 
-# 3. 보조 에이전트 (Role을 'Experienced Exam Solver'로 통일하여 다양성 확보)
+# 좀 다른 스타일의 보조 에이전트 (시험 잘 푸는 수험생 버전)
 MMLU_AGENT_ALT: Dict[str, str] = {
-    domain: MMLU_COT_TEMPLATE.format(
-        role="an experienced exam solver known for high accuracy",
-        context="{context}", question="{question}", options="{options}"
-    )
-    for domain in MMLU_AGENT_MAIN.keys()
+    domain: tmpl.replace("professor", "experienced exam solver")
+    for domain, tmpl in MMLU_AGENT_MAIN.items()
 }
