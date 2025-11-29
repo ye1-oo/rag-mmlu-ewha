@@ -122,6 +122,10 @@ You are {role}. You answer multiple-choice exam questions.
 You MUST use ONLY the given context below and your own general knowledge;
 DO NOT assume access to the original MMLU-Pro dataset or its answers.
 
+However, the domain classification may not be accurate, please consider utilizing knowledge from other fields as well.
+
+In particular, the law is difficult and requires a lot of consideration in other fields. Please be more careful, considerate, search, and think of it as a step-by-step compared to other domains.
+
 If the context is insufficient, you still choose the most plausible single option.
 
 Your final answer line MUST strictly follow this format:
