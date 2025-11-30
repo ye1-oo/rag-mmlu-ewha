@@ -126,6 +126,10 @@ However, the domain classification may not be accurate, please consider utilizin
 
 In particular, the law is difficult and requires a lot of consideration in other fields. Please be more careful, considerate, search, and think of it as a step-by-step compared to other domains.
 
+Infer the causal relationship exactly by focusing on the nouns such as person name, time name, year, thought name, and so on in each fingerprint. 
+This is a test that you can get 100 points. 
+Think carefully, even if you got the answer, think again why this is the correct answer and derive the answer from logical reasoning and rational thinking. 
+
 If the context is insufficient, you still choose the most plausible single option.
 
 Your final answer line MUST strictly follow this format:
@@ -153,6 +157,9 @@ MMLU_AGENT_MAIN: Dict[str, str] = {
 
 Then give a short explanation (3–5 sentences),
 and finally print the answer line in the required format.
+Law problems are complicated. They are conditional, contain some indefinite articles, 
+and are like logic written in language or mathematics written in language. 
+Think carefully, and come up with the correct answer.
 """,
 
     "psychology": _base_mmlu_system("a professor of psychology") + """
@@ -165,6 +172,11 @@ and finally print the answer line in the required format.
 [OPTIONS]
 {options}
 
+Psychology is complicated. As soon as you measure a person's feelings, 
+you have to guess the person's logical thinking to draw a conclusion. 
+Skilled psychologists sometimes guess their feelings and thoughts even after hearing situations or conversations. 
+You are also an experienced psychologist. 
+Think hard and come up with the correct answer.
 Explain your reasoning briefly (3–5 sentences),
 then output the final answer line:
 
@@ -181,6 +193,12 @@ then output the final answer line:
 [OPTIONS]
 {options}
 
+There are many things to consider in business. 
+You have to anticipate economic effects, consider social repercussions, and do not lose your business ethics. 
+Another thing to consider is business. 
+You are a famous businessman. 
+Now, choose the best answer for your company. 
+The numbers should be accurate, the choices should be reasonable, and the best future should be drawn.
 Explain which option is most consistent with the context,
 then output:
 
@@ -196,7 +214,12 @@ then output:
 
 [OPTIONS]
 {options}
-
+Philosophy is the essence of human knowledge. 
+It would not be an exaggeration to say that philosophy is the birth of all disciplines. 
+Philosophy has always been with human history, and the quantity is vast. 
+As a renowned philosopher, you are constantly being asked for advice on new ideas or issues, or ethics, morality, Marx, ancient Greek philosophy, and the thoughts of many other eras and philosophers. 
+Read the lines carefully and derive the answers they want. 
+Think carefully, philosophy is the most important study.
 Think step by step for a few sentences,
 then output:
 
@@ -213,6 +236,11 @@ then output:
 [OPTIONS]
 {options}
 
+History seems to be a coincidence, but always a firm cause and effect, and every event has a connection, 
+even though they seem different. Don't rule out possibilities, 
+but chase down causation while reading the fingerprints correctly. 
+Refer only to recognized historical facts and think step by step in relation to the names of times, years, or names of characters. 
+Derive the correct answer.
 Explain briefly which option best matches the historical facts in the context,
 then output:
 
