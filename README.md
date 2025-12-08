@@ -279,7 +279,7 @@ python evaluate_testset.py
 - GitHub repository management  
 - Documentation updates (README.md)
 
-### Minseol Kim  
+### Minsol Kim  
 - Offline pipeline design  
 - Performance experiments  
 
