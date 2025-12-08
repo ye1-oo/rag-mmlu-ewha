@@ -284,7 +284,7 @@ python evaluate_testset.py
 - Performance experiments
 - Prompt tuning
 
-### Eunsu Jung  
+### Eunsoo Chung  
 - Base code implementation  
 - External KB construction  
 - Prompt tuning  
