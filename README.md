@@ -1,6 +1,6 @@
 # Ewha Regulations + MMLU-Pro Hybrid RAG Pipeline  
 Team 2 – NLP Term Project, Ewha Womans University  
-Minseol Kim, Eunsu Jung, Songhee Han, Yewon Heo
+Minsol Kim, Eunsu Jung, Songhee Han, Yewon Heo
 
 A hybrid Retrieval-Augmented Generation (RAG) system integrating **Ewha academic regulations** and **MMLU-Pro reasoning tasks**, using FAISS retrieval, Wikipedia expansion, domain-aware knowledge bases, and multi-agent LLM inference.
 
