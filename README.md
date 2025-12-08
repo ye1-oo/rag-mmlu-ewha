@@ -9,7 +9,7 @@ This repository contains the complete pipeline from offline corpus construction 
 ---
 
 ## GitHub Topics  
-rag, faiss, nlp, llm, retrieval-augmented-generation, mmlu, wikipedia, solar-pro
+rag, faiss, nlp, llm, retrieval-augmented-generation, mmlu-pro, wikipedia, solar-pro
 
 ---
 
