@@ -8,6 +8,7 @@
 """
 
 import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 import csv
 from tqdm import tqdm
 
@@ -20,6 +21,9 @@ from src.retrieval.retriever import (
     build_mmlu_context,
 )
 from src.llm.solver import solve_with_ensemble
+
+import sys
+from pathlib import Path
 
 
 # ---------------------------------------------------
