@@ -78,7 +78,6 @@ rag-mmlu-ewha/
 
 ### End-to-End Pipeline Overview
 
-```markdown
 ```mermaid
 flowchart TD
 
