@@ -280,8 +280,9 @@ python evaluate_testset.py
 - Documentation updates (README.md)
 
 ### Minsol Kim  
-- Offline pipeline design  
-- Performance experiments  
+- Offline pipeline design and implementation 
+- Performance experiments
+- Prompt tuning
 
 ### Eunsu Jung  
 - Base code implementation  
@@ -292,7 +293,7 @@ python evaluate_testset.py
 ### Songhee Han  
 - Base code implementation  
 - External KB construction  
-- Slide creation  
+- PPT Slide creation  
 
 ---
 
