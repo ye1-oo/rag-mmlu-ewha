@@ -78,6 +78,7 @@ rag-mmlu-ewha/
 
 ### End-to-End Pipeline Overview
 
+```markdown
 ```mermaid
 flowchart TD
 
@@ -87,17 +88,17 @@ flowchart TD
     B -->|English + langdetect=='en'| D[MMLU Pipeline]
     B -->|Default| C
 
-    C --> C1[FAISS Retrieval<br/>Ewha Corpus]
-    C1 --> C2[Context Assembly]
-    C2 --> C3[Multi-Agent Solver<br/>(Strict / Compare / Short)]
+    C --> C1["FAISS Retrieval / Ewha Corpus"]
+    C1 --> C2["Context Assembly"]
+    C2 --> C3["Multi-Agent Solver (Strict / Compare / Short)"]
     C3 --> G[Ensemble Voting]
 
-    D --> D0[Domain Classification<br/>(LLM + Keywords)]
-    D0 --> D1[Wikipedia Retrieval<br/>Title Candidates + Segmentation]
-    D0 --> D2[External KB Retrieval<br/>Domain Textbooks]
-    D1 --> D3[Re-ranking & Fusion<br/>Top Context Selection]
+    D --> D0["Domain Classification (LLM + Keywords)"]
+    D0 --> D1["Wikipedia Retrieval (Title candidates, segmentation)"]
+    D0 --> D2["External KB Retrieval (Domain textbooks)"]
+    D1 --> D3["Re-ranking & Fusion (top context selection)"]
     D2 --> D3
-    D3 --> D4[Multi-Agent Solver<br/>(Main + Alt)]
+    D3 --> D4["Multi-Agent Solver (Main + Alt)"]
     D4 --> G
 
     G --> H[Answer Extraction]
